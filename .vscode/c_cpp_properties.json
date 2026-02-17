@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux Kernel Module",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__KERNEL__",
+                "MODULE",
+                "__linux__"
+            ],
+            "compilerPath": "",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-arm64",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}
