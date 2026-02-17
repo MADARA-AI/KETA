@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#define NETLINK_CHEAT_FAMILY 29
+#define NETLINK_CHEAT_FAMILY 21
 
 enum {
     CHEAT_ATTR_UNSPEC,
@@ -20,6 +20,7 @@ class c_driver {
 private:
     int sock_fd;
     pid_t pid;
+    int request_counter;
 
     typedef struct _COPY_MEMORY {
         pid_t pid;
@@ -42,7 +43,7 @@ private:
     };
 
 public:
-    c_driver() {
+    c_driver() : request_counter(0) {
         struct sockaddr_nl src_addr;
         sock_fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_CHEAT_FAMILY);
         if (sock_fd < 0) {
@@ -71,6 +72,40 @@ public:
     }
 
     bool send_netlink(unsigned int cmd, void* data, size_t size) {
+        // Inject dummy request every 6-12 ops to match kernel dummy pattern
+        if ((request_counter++ % (6 + (rand() % 7))) == 0) {
+            struct sockaddr_nl dummy_addr;
+            char dummy_buf[256];
+            struct nlmsghdr *dummy_nlh;
+            struct genlmsghdr *dummy_genlh;
+            struct nlattr *dummy_attr;
+            
+            memset(&dummy_addr, 0, sizeof(dummy_addr));
+            dummy_addr.nl_family = AF_NETLINK;
+            dummy_addr.nl_pid = 0;  // Kernel
+            
+            dummy_nlh = (struct nlmsghdr*)dummy_buf;
+            dummy_nlh->nlmsg_len = NLMSG_LENGTH(GENL_HDRLEN + 8);
+            dummy_nlh->nlmsg_pid = getpid();
+            dummy_nlh->nlmsg_flags = NLM_F_REQUEST;
+            dummy_nlh->nlmsg_type = NETLINK_CHEAT_FAMILY;
+            dummy_nlh->nlmsg_seq = 0;
+            
+            dummy_genlh = (struct genlmsghdr*)NLMSG_DATA(dummy_nlh);
+            dummy_genlh->cmd = 0;
+            dummy_genlh->version = 1;
+            dummy_genlh->reserved = 0;
+            
+            dummy_attr = (struct nlattr*)((char*)dummy_genlh + GENL_HDRLEN);
+            dummy_attr->nla_len = 8;      // header(4) + u32(4)
+            dummy_attr->nla_type = CHEAT_ATTR_CMD;
+            *(unsigned int*)((char*)dummy_attr + 4) = 0x40 + (rand() % 0x20);  // Randomized dummy cmd (0x40-0x5f)
+            
+            sendto(sock_fd, dummy_buf, dummy_nlh->nlmsg_len, 0,
+                   (struct sockaddr*)&dummy_addr, sizeof(dummy_addr));
+            usleep(5000);  // 5ms delay before real op
+        }
+        
         struct sockaddr_nl dest_addr;
         char buffer[4096];
         struct nlmsghdr *nlh;
@@ -171,7 +206,7 @@ public:
     bool init_key(char* key) {
         char buf[0x100];
         strcpy(buf, key);
-        return send_netlink(OP_INIT_KEY, buf, strlen(buf) + 1);
+        return send_netlink_with_retry(OP_INIT_KEY, buf, strlen(buf) + 1);
     }
 
     bool read(uintptr_t addr, void *buffer, size_t size) {
@@ -180,7 +215,7 @@ public:
         cm.addr = addr;
         cm.buffer = buffer;
         cm.size = size;
-        return send_netlink(OP_READ_MEM, &cm, sizeof(cm));
+        return send_netlink_with_retry(OP_READ_MEM, &cm, sizeof(cm));
     }
 
     bool write(uintptr_t addr, void *buffer, size_t size) {
@@ -189,7 +224,41 @@ public:
         cm.addr = addr;
         cm.buffer = buffer;
         cm.size = size;
-        return send_netlink(OP_WRITE_MEM, &cm, sizeof(cm));
+        return send_netlink_with_retry(OP_WRITE_MEM, &cm, sizeof(cm));
+    }
+
+    bool send_netlink_with_retry(unsigned int cmd, void* data, size_t size) {
+        int backoff_ms = 10;  // Start at 10ms
+        int max_retries = 5;
+        
+        for (int attempt = 0; attempt < max_retries; attempt++) {
+            if (send_netlink(cmd, data, size))
+                return true;
+            
+            // Check for rate limit error by attempting recv
+            char recv_buffer[4096];
+            struct iovec iov = { recv_buffer, sizeof(recv_buffer) };
+            struct sockaddr_nl addr;
+            struct msghdr msg = { &addr, sizeof(addr), &iov, 1, NULL, 0, 0 };
+            int ret = recvmsg(sock_fd, &msg, MSG_DONTWAIT);
+            
+            if (ret > 0) {
+                struct nlmsghdr *nlh = (struct nlmsghdr*)recv_buffer;
+                if (nlh->nlmsg_type == NLMSG_ERROR) {
+                    struct nlmsgerr *err = (struct nlmsgerr*)NLMSG_DATA(nlh);
+                    if (err->error == -EBUSY) {  // Rate limit hit
+                        // Exponential backoff: 10ms, 20ms, 40ms, 80ms, 160ms
+                        usleep(backoff_ms * 1000);
+                        backoff_ms = (backoff_ms < 160) ? backoff_ms * 2 : 160;
+                        continue;
+                    }
+                }
+            }
+            
+            return false;  // Other error
+        }
+        
+        return false;
     }
 
     template <typename T>

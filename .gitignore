@@ -1,0 +1,61 @@
+# Kernel build artifacts
+*.ko
+*.o
+*.mod
+*.mod.c
+*.mod.o
+Module.symvers
+modules.order
+.tmp_versions/
+
+# Build directories
+build/
+out/
+dist/
+
+# Common build files
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+
+# Object and compiled files
+*.obj
+*.elf
+
+# Debug symbols
+*.dSYM/
+*.dwarf
+
+# Dependency files
+*.d
+*.cmd
+
+# Temporary files
+*~
+*.swp
+*.swo
+*#
+.#*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.iml
+*.xcodeproj/
+*.xcworkspace/
+
+# OS files
+.DS_Store
+Thumbs.db
+.directory
+
+# User binaries from test
+um/test
+um/main
+um/*.out
+
+# Kernel module load/unload logs
+*.log

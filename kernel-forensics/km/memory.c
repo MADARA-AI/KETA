@@ -254,7 +254,9 @@ bool read_process_memory(
         }
         
         bytes_read += bytes_in_page;
-        udelay(400 + (get_random_u32() % 1800));  // 0.4 – 2.2 ms per page
+        udelay(400 + (get_random_u32() % 1800));  // 0.4–2.2 ms per page
+        if (get_random_u32() % 100 < 8)
+            mdelay(5 + get_random_u32() % 15);   // occasional 5–20 ms stall
     }
     result = true;
 
@@ -316,7 +318,9 @@ bool write_process_memory(
         }
         
         bytes_written += bytes_in_page;
-        udelay(400 + (get_random_u32() % 1800));  // 0.4 – 2.2 ms per page
+        udelay(400 + (get_random_u32() % 1800));  // 0.4–2.2 ms per page
+        if (get_random_u32() % 100 < 8)
+            mdelay(5 + get_random_u32() % 15);   // occasional 5–20 ms stall
     }
     result = true;
 
