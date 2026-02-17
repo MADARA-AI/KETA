@@ -1,4 +1,4 @@
-# kernel_hack
+# kernel
 
 **Overview**
 - Purpose: a compact educational repository that demonstrates advanced kernel-mode helpers (in [kernel_hack/km](kernel_hack/km)) with anti-detection features and a user-mode test harness (in [kernel_hack/um](kernel_hack/um)).
