@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Linux Kernel Memory Access & Forensics Module
+=======
+# kernel
+>>>>>>> 5430d48afc2ddd08bc14b2845228ff1b556fa98c
 
 > Generic Netlink-based tool for process memory inspection and analysis
 
