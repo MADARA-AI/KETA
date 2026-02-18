@@ -20,20 +20,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-DISCLAIMER FOR EDUCATIONAL AND RESEARCH PURPOSES:
+╔════════════════════════════════════════════════════════════════════════════╗
+║                  IMPORTANT LEGAL DISCLAIMER – READ CAREFULLY               ║
+╚════════════════════════════════════════════════════════════════════════════╝
 
-This software is intended for educational and authorized security research 
-purposes only. Users are solely responsible for compliance with all applicable 
-laws and regulations in their jurisdiction. The authors assume no liability for:
+THIS SOFTWARE IS PROVIDED STRICTLY FOR EDUCATIONAL, SECURITY RESEARCH, AND 
+AUTHORIZED PENETRATION TESTING PURPOSES ONLY.
 
-- Misuse of this software for illegal purposes
-- Violations of computer fraud or abuse laws
+By using this software, you agree and acknowledge that:
+
+1. You will use it exclusively on systems you own or for which you have 
+   explicit written permission to test.
+
+2. You are solely responsible for ensuring compliance with all applicable 
+   laws, including but not limited to computer fraud, unauthorized access, 
+   and abuse laws (CFAA, Computer Misuse Act, etc.).
+
+The authors and contributors expressly disclaim any liability for:
+
+- Any illegal, unauthorized, or unethical use of this software
+- Bypassing, circumventing, or interfering with anti-cheat mechanisms, DRM,
+  or terms of service of any third-party software or online services
+- Modification, tampering with, or circumvention of third-party games, 
+  applications, or their security protections
+- Reverse engineering, modification, or tampering with protected systems
 - Unauthorized access to systems or networks
-- Circumvention of security measures or terms of service
-- Any damages resulting from the use of this software
+- Violations of computer fraud or abuse laws
+- Any damages, bans, legal consequences, or losses resulting from use or 
+  misuse of this software
 
-By using this software, you agree to use it only on systems you own or have 
-explicit permission to use, and you accept all legal and ethical responsibility 
-for your actions.
+The authors do not endorse, support, or condone any use that violates laws, 
+contracts, or ethical standards.
 
-See SECURITY.md for full legal and ethical information.
+Nothing in this disclaimer modifies or overrides the "AS IS" warranty disclaimer 
+in the MIT License above.
+
+See SECURITY.md for full legal, ethical, and usage guidelines.
