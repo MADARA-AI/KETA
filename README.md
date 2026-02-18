@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 # Linux Kernel Memory Access & Forensics Module
-=======
-# kernel
->>>>>>> 5430d48afc2ddd08bc14b2845228ff1b556fa98c
 
-> Generic Netlink-based tool for process memory inspection and analysis
+> Generic Netlink-based tool for process memory inspection and analysis with advanced anti-detection hardening
 
 [![Status](https://img.shields.io/badge/status-research-blue)]() [![Platform](https://img.shields.io/badge/platform-Android%20%7C%20Linux-lightgrey)]() [![License](https://img.shields.io/badge/license-research%20only-red)]()
 
@@ -94,18 +90,17 @@ kernel-forensics/
 - **[MASTER_SUMMARY.md](MASTER_SUMMARY.md)** - Complete 350-line technical overview
 
 **Phase Details (30 min each):**
-- [PHASE1_HARDENING_REPORT.md](PHASE1_HARDENING_REPORT.md) - Foundation hardening
-- [PHASE2_REPORT.md](PHASE2_REPORT.md) - Advanced features
-- [PHASE3_REPORT.md](PHASE3_REPORT.md) - Traffic obfuscation  
-- [PHASE4_REPORT.md](PHASE4_REPORT.md) - Advanced obfuscation
-- [PHASE4_5_POLISH.md](PHASE4_5_POLISH.md) - Final polish tweaks
+- [HARDENING_REPORT.md](HARDENING_REPORT.md) - Phase 1: Foundation hardening
+- [PHASE2_REPORT.md](PHASE2_REPORT.md) - Phase 2: Advanced features
+- [PHASE3_REPORT.md](PHASE3_REPORT.md) - Phase 3: Traffic obfuscation  
+- [PHASE4_REPORT.md](PHASE4_REPORT.md) - Phase 4: Advanced obfuscation
+- [PHASE4_5_POLISH.md](PHASE4_5_POLISH.md) - Phase 4.5: Final polish tweaks
 
 **Deployment & Testing:**
 - [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) - Step-by-step deployment (30-50 min)
-- [PHASE4_QUICK_TEST.md](PHASE4_QUICK_TEST.md) - Verification commands
 - [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) - Navigation guide
 
-**Total: 13 files, 2600+ lines**
+**Total: 13 core files, 2600+ lines of documentation**
 
 ## Usage Examples
 
