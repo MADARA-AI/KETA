@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#define NETLINK_CHEAT_FAMILY 21
+#define NETLINK_CHEAT_FAMILY 29
 
 enum {
     CHEAT_ATTR_UNSPEC,
@@ -146,7 +146,7 @@ public:
         
         // CHEAT_ATTR_DATA
         attr = (struct nlattr*)((char*)attr + cmd_attr_size);
-        attr->nla_len = data_attr_size;
+        attr->nla_len = data_attr_padded;      // fixed
         attr->nla_type = CHEAT_ATTR_DATA;
         memcpy((char*)attr + 4, data, size);
 
